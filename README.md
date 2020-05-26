@@ -1,1 +1,1 @@
-# applications_of_structures
+# applications_of_data_structures
