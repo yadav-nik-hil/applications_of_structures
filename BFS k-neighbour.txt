@@ -1,0 +1,34 @@
+ll n,m,k;
+vector<string> g;
+vector<vi> dis;
+
+ll dx[]={1,0,-1,0};
+ll dy[]={0,1,0,-1};
+
+bool check(ii p)
+{ return (p.fi>=0&&p.fi<n&&p.se>=0&&p.se<m&&g[p.fi][p.se]=='.'); }
+
+void bfs(ii st)
+{
+    queue<ii> q;
+    dis = vector<vi>(n,vi(m,inf));
+    dis[st.fi][st.se]=0;
+    q.push(st);
+    while(!q.empty())
+    {
+        ii u=q.front(); q.pop();
+        for(ll i=0;i<4;i++)
+        {
+            for(ll j=1;j<=k;j++)
+            {
+                ii v=mp(u.fi+dx[i]*j,u.se+dy[i]*j);
+                if(!check(v)||dis[v.fi][v.se]<=dis[u.fi][u.se]) break;
+                if(g[v.fi][v.se]=='.'&&dis[v.fi][v.se]>dis[u.fi][u.se]+1)
+                {
+                    dis[v.fi][v.se] = dis[u.fi][u.se]+1;
+                    q.push(v);
+                }
+            }
+        }
+    }
+}
