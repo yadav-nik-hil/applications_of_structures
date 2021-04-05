@@ -1,0 +1,86 @@
+
+ll n,m;
+vector<string> arr;
+vector<vector<ll>> dist;
+vector<vector<ii>> par;
+
+bool check(ll x,ll y)
+{
+    if(x>=0&&x<n&&y>=0&&y<m&&arr[x][y]!='#') return 1;
+    return 0;
+}
+
+ll dx[] = {1,0,-1,0,1,-1,1,-1};
+ll dy[] = {0,1,0,-1,1,-1,-1,1};
+
+void bfs(ii st)
+{
+    ll k;
+    queue<ii> q;
+    dist = vector<vector<ll>>(n,vector<ll>(m,MOD*MOD));
+    par = vector<vector<ii>>(n,vector<ii>(m,{0,0}));
+
+    dist[st.fi][st.se] = 0;
+    par[st.fi][st.se] = {-1,-1};
+    q.push(st);
+    while(!q.empty())
+    {
+        auto pos = q.front();
+        q.pop();
+        rep(k,8)
+        {
+            if(check(pos.fi+dx[k], pos.se+dy[k]) && dist[pos.fi+dx[k]][pos.se+dy[k]] > dist[pos.fi][pos.se]+1)
+            {
+                dist[pos.fi+dx[k]][pos.se+dy[k]] = dist[pos.fi][pos.se]+1;
+                par[pos.fi+dx[k]][pos.se+dy[k]] = {pos.fi,pos.se};
+                q.push({pos.fi+dx[k], pos.se+dy[k]});
+            }
+        }
+    }
+}
+
+void ppath(ii en)
+{
+    if(en.fi==-1 && en.se==-1) return;
+    ppath(par[en.fi][en.se]);
+    cout<<en.fi<<" "<<en.se<<nl;
+}
+
+
+signed main()
+{
+    fast;
+    //factorial();
+    //SieveofEratosthenes();
+    ll T,i,j,k,x,y,cnt,res;
+    cin>>T;
+    //T=1;
+    while(T--)
+    {
+        char c;
+        string s;
+        cin>>n>>m;
+        arr.clear();
+        arr.resize(n);
+        rep(i,n)
+        {
+            cin>>c;
+            s = c;
+            rep(j,m-1)
+            {
+                cin>>c;
+                s+=c;
+            }
+            arr[i] = s;
+        }
+        ii st,en;
+        cin>>st.fi>>st.se;
+        cin>>en.fi>>en.se;
+        bfs(st);
+        if(dist[en.fi][en.se]==MOD*MOD)
+            cout<<"-1\n";
+        else
+            cout<<dist[en.fi][en.se]<<nl;
+    }
+    return 0;
+}

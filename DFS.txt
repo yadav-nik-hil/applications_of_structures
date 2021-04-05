@@ -1,0 +1,52 @@
+vector<vector<ll>> g;
+vector<ll> vis;
+
+void dfs(ll node,ll comp)
+{
+    vis[node] = comp;
+    for(auto v:g[node])
+    {
+        if(!vis[v])
+            dfs(v,comp);
+    }
+}
+
+signed main()
+{
+    fast;
+    //factorial();
+    //SieveofEratosthenes();
+    ll T,n,m,i,j,k,x,y,cnt,res;
+    cin>>T;
+    //T=1;
+    while(T--)
+    {
+        cin>>n>>m>>k;
+        g.clear();
+        g.resize(n+1);
+        vis.assign(n+1,0);
+        rep(i,m)
+        {
+            cin>>x>>y;
+            g[x].pb(y);
+            g[y].pb(x);
+        }
+        ll comp_cnt = 0;
+        fr(i,1,n+1)
+        {
+            if(!vis[i])
+            {
+                comp_cnt++;
+                dfs(i,comp_cnt);
+            }
+        }
+
+        vi a(comp_cnt+1);
+        rep(i,comp_cnt+1)
+            a[i] = 0;
+        fr(i,1,n+1)
+            a[vis[i]]++;
+    }
+
+    return 0;
+}

@@ -1,0 +1,58 @@
+vector<vii> g;
+vi vis,dist;
+ll n,m;
+
+void dijkstra(ll sc)
+{
+    dist.assign(n+1,MOD*MOD);
+    vis.assign(n+1,0);
+
+    dist[sc] = 0;
+    priority_queue<ii> pq;
+    pq.push(mp(-0,sc));
+
+    while(!pq.empty())
+    {
+        ii fs = pq.top(); pq.pop();
+        if(vis[fs.se]) continue;
+        vis[fs.se] = 1;
+        for(auto v:g[fs.se])
+        {
+            ll ngh = v.fi;
+            ll wt = v.se;
+            if(dist[ngh] > dist[fs.se]+wt)
+            {
+                dist[ngh] = dist[fs.se]+wt;
+                pq.push(mp(-dist[ngh],ngh));
+            }
+        }
+    }
+}
+
+
+signed main()
+{
+    fast;
+    //factorial();
+    //SieveofEratosthenes();
+    ll T,i,j,k,x,y,cnt,res;
+    //cin>>T;
+    T=1;
+    while(T--)
+    {
+        cin>>n>>m;
+        g.clear();
+        g.resize(n+1);
+        rep(i,m)
+        {
+            cin>>x>>y>>k;
+            g[x].pb(mp(y,k));
+            // g[y].pb(mp(x,k));
+        }
+        dijkstra(1);
+        fr(i,1,n+1)
+            cout<<dist[i]<<" ";
+    }
+
+    return 0;
+}
